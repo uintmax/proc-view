@@ -9,6 +9,7 @@ Process::Process(pid_t pid) {
     this->pid = pid;
 
     // Save ownership information of process
+    // TODO: Read from procfs stat file instead -> Contains more information
     struct stat info{};
     if (stat(proc_path.c_str(), &info) == -1)
         throw std::runtime_error("Could not acquire ownership information of process");
@@ -22,10 +23,14 @@ Process::Process(pid_t pid) {
 std::vector<Process> Process::get_all_processes() {
     std::vector<Process> proc_list;
 
+    // Iterate over procfs directory
     for (const auto &entry : std::filesystem::directory_iterator(PROCFS_MOUNT)) {
+
+        // Each process is represented by a directory in the procfs
         if (!entry.is_directory())
             continue;
 
+        // Process directories only contain digits -> pid
         std::string dir_name = entry.path().filename().string();
         if (!std::ranges::all_of(dir_name, isdigit))
             continue;
