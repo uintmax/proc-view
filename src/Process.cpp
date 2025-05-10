@@ -19,6 +19,25 @@ Process::Process(pid_t pid) {
     this->uid = pw->pw_uid;
 }
 
+std::vector<Process> Process::get_all_processes() {
+    std::vector<Process> proc_list;
+
+    for (const auto &entry : std::filesystem::directory_iterator(PROCFS_MOUNT)) {
+        if (!entry.is_directory())
+            continue;
+
+        std::string dir_name = entry.path().filename().string();
+        if (!std::ranges::all_of(dir_name, isdigit))
+            continue;
+
+        pid_t pid = std::stoi(dir_name);
+        Process proc(pid);
+        proc_list.push_back(proc);
+    }
+
+    return proc_list;
+}
+
 pid_t Process::get_pid() const {
     return pid;
 }
