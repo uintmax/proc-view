@@ -9,7 +9,7 @@ Process::Process(pid_t pid) {
     this->pid = pid;
 
     // Save ownership information of process
-    // TODO: Read from procfs stat file instead -> Contains more information
+    // TODO: Read from procfs status file instead -> Contains more information
     struct stat info{};
     if (stat(proc_path.c_str(), &info) == -1)
         throw std::runtime_error("Could not acquire ownership information of process");
@@ -24,8 +24,7 @@ std::vector<Process> Process::get_all_processes() {
     std::vector<Process> proc_list;
 
     // Iterate over procfs directory
-    for (const auto &entry : std::filesystem::directory_iterator(PROCFS_MOUNT)) {
-
+    for (const auto &entry: std::filesystem::directory_iterator(PROCFS_MOUNT)) {
         // Each process is represented by a directory in the procfs
         if (!entry.is_directory())
             continue;
@@ -49,4 +48,9 @@ pid_t Process::get_pid() const {
 
 __uid_t Process::get_uid() const {
     return uid;
+}
+
+std::filesystem::path Process::get_exe() const {
+    std::string exe_path = PROCFS_MOUNT + std::to_string(this->pid) + PROCFS_EXE;
+    return std::filesystem::read_symlink(exe_path);
 }

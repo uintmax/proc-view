@@ -33,10 +33,13 @@ public:
     /**
      * Returns the user id
      */
-    __uid_t get_uid() const;
+    uid_t get_uid() const;
+
+    std::filesystem::path get_exe() const;
 
 private:
     static constexpr std::string PROCFS_MOUNT = "/proc/";
+    static constexpr std::string PROCFS_EXE = "/exe";
     pid_t pid;
     __uid_t uid;
 };

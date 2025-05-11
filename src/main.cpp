@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Process.h"
+#include "System.h"
 
 int main() {
     try {
@@ -9,6 +10,14 @@ int main() {
         auto proc_list = Process::get_all_processes();
         for (const auto &proc_entry: proc_list) {
             std::cout << "[" << proc_entry.get_pid() << "] uid: " << proc_entry.get_uid() << std::endl;
+            if (proc_entry.get_uid() == System::get_current_user()) {
+                try {
+                    std::cout << proc_entry.get_exe() << std::endl;
+                } catch (const std::exception &e) {
+                    // TODO: Check for zombie/defunct processes
+                    std::cerr << e.what() << std::endl;
+                }
+            }
         }
         std::cout << "size: " << proc_list.size() << std::endl;
     } catch (const std::exception &e) {
