@@ -8,4 +8,6 @@ add_executable(proc_view src/main.cpp
         src/Process.h
         src/System.cpp
         src/System.h
+        src/ProcessAnalyzer.cpp
+        src/ProcessAnalyzer.h
 )
