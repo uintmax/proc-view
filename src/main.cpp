@@ -24,6 +24,9 @@ int main() {
         std::cerr << e.what() << std::endl;
     }
 
+    Process test_proc(26465);
+    auto test_val = test_proc.read<int>(0x7ffffe2ffedc);
+    std::cout << "test value: " << test_val << std::endl;
 
     return 0;
 }
