@@ -46,7 +46,7 @@ pid_t Process::get_pid() const {
     return pid;
 }
 
-__uid_t Process::get_uid() const {
+uid_t Process::get_uid() const {
     return uid;
 }
 

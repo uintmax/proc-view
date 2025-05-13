@@ -66,7 +66,7 @@ private:
     static constexpr std::string PROCFS_MOUNT = "/proc/";
     static constexpr std::string PROCFS_EXE = "/exe";
     pid_t pid;
-    __uid_t uid;
+    uid_t uid;
 };
 
 
