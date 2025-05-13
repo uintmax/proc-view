@@ -3,6 +3,7 @@
 #include "System.h"
 
 int main() {
+    /*
     try {
         Process proc(1);
         std::cout << "uid: " << proc.get_uid() << std::endl;
@@ -23,10 +24,15 @@ int main() {
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
+    */
 
-    Process test_proc(26465);
-    auto test_val = test_proc.read<int>(0x7ffffe2ffedc);
-    std::cout << "test value: " << test_val << std::endl;
+    auto proc2 = Process::get_processes_by_name("test-bin");
+
+    if (!proc2.empty()) {
+        auto test_val = proc2.front().read<int>(0x7ffd76baebf4);
+        std::cout << "test value: " << test_val << std::endl;
+
+    }
 
     return 0;
 }

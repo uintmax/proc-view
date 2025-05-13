@@ -9,6 +9,8 @@
 #include <vector>
 #include <algorithm>
 #include <sys/uio.h>
+#include <fstream>
+#include <sstream>
 
 /**
  * Process class to interact with processes on Linux
@@ -26,6 +28,8 @@ public:
      */
     static std::vector<Process> get_all_processes();
 
+    static std::vector<Process> get_processes_by_name(const std::string &proc_name);
+
     /**
      * Returns the process id
      */
@@ -37,6 +41,10 @@ public:
     uid_t get_uid() const;
 
     std::filesystem::path get_exe() const;
+
+    std::string get_cmdline() const;
+
+    std::string get_comm() const;
 
 
     template<typename T>
@@ -65,8 +73,12 @@ public:
 private:
     static constexpr std::string PROCFS_MOUNT = "/proc/";
     static constexpr std::string PROCFS_EXE = "/exe";
+    static constexpr std::string PROCFS_CMDLINE = "/cmdline";
+    static constexpr std::string PROCFS_COMM = "/comm";
     pid_t pid;
     uid_t uid;
+    std::string cmdline;
+    std::string comm;
 };
 
 
