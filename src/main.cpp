@@ -26,13 +26,10 @@ int main() {
     }
     */
 
-    auto proc2 = Process::get_processes_by_name("test-bin");
+    auto proc2 = Process::get_process_by_name("test-bin");
 
-    if (!proc2.empty()) {
-        auto test_val = proc2.front().read<int>(0x7ffd76baebf4);
-        std::cout << "test value: " << test_val << std::endl;
-
-    }
+    auto test_val = proc2.read<int>(0x7ffd76baebf4);
+    std::cout << "test value: " << test_val << std::endl;
 
     return 0;
 }

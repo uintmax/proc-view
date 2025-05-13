@@ -30,6 +30,8 @@ public:
 
     static std::vector<Process> get_processes_by_name(const std::string &proc_name);
 
+    static Process get_process_by_name(const std::string &proc_name);
+
     /**
      * Returns the process id
      */

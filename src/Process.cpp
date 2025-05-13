@@ -56,11 +56,22 @@ std::vector<Process> Process::get_all_processes() {
 
 std::vector<Process> Process::get_processes_by_name(const std::string &proc_name) {
     auto procs = Process::get_all_processes();
-    std::erase_if(procs, [proc_name](const Process& p) {
+    std::erase_if(procs, [proc_name](const Process &p) {
         return !p.get_comm().starts_with(proc_name);
     });
     return procs;
 }
+
+Process Process::get_process_by_name(const std::string &proc_name) {
+    auto procs = Process::get_processes_by_name(proc_name);
+    if (procs.empty())
+        throw std::runtime_error("Process name not found");
+    if (procs.size() > 1)
+        throw std::runtime_error("Found " + std::to_string(procs.size()) + " processes");
+
+    return procs.front();
+}
+
 
 pid_t Process::get_pid() const {
     return pid;
