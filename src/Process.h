@@ -11,6 +11,7 @@
 #include <sys/uio.h>
 #include <fstream>
 #include <sstream>
+#include "MemoryRegion.h"
 
 /**
  * Process class to interact with processes on Linux
@@ -48,9 +49,11 @@ public:
 
     std::string get_comm() const;
 
+    std::vector<MemoryRegion> get_memory_regions();
+
 
     template<typename T>
-    T read(intptr_t address) {
+    T read(uintptr_t address) {
         T buffer;
         const auto len = sizeof(buffer);
         struct iovec local;
@@ -73,10 +76,11 @@ public:
     }
 
 private:
-    static constexpr std::string PROCFS_MOUNT = "/proc/";
-    static constexpr std::string PROCFS_EXE = "/exe";
-    static constexpr std::string PROCFS_CMDLINE = "/cmdline";
-    static constexpr std::string PROCFS_COMM = "/comm";
+    inline static const std::string procfs_mount = "/proc/";
+    inline static const std::string procfs_exe = "/exe";
+    inline static const std::string procfs_cmdline = "/cmdline";
+    inline static const std::string procfs_comm = "/comm";
+    inline static const std::string procfs_maps = "/maps";
     pid_t pid;
     uid_t uid;
     std::string cmdline;

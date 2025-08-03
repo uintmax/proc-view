@@ -27,9 +27,13 @@ int main() {
     */
 
     auto proc2 = Process::get_process_by_name("test-bin");
-
-    auto test_val = proc2.read<int>(0x7ffd76baebf4);
-    std::cout << "test value: " << test_val << std::endl;
+    auto memory_regions = proc2.get_memory_regions();
+    for (const auto &memory_region: memory_regions) {
+        if (memory_region.is_executable()) {
+            std::cout << std::hex << memory_region.get_start_addr() << " - " << memory_region.get_end_addr() << " " <<
+                    memory_region.get_pathname() << std::endl;
+        }
+    }
 
     return 0;
 }
