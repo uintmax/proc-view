@@ -30,6 +30,7 @@ Process::Process(pid_t pid) {
     std::stringstream comm_buffer;
     comm_buffer << comm_stream.rdbuf();
     this->comm = comm_buffer.str();
+    this->comm.pop_back(); // Remove newline
 }
 
 std::vector<Process> Process::get_all_processes() {
