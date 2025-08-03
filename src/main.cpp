@@ -3,8 +3,16 @@
 #include "Process.h"
 #include "System.h"
 #include <sol/sol.hpp>
+#include <QtWidgets>
 
-int main() {
+int main(int argc, char **argv) {
+
+    QApplication app(argc, argv);
+    QWidget window;
+    window.resize(600, 600);
+    window.show();
+    return app.exec();
+
     sol::state lua;
     lua.open_libraries(sol::lib::base);
     lua.new_usertype<Process>("Process", sol::constructors<Process(pid_t pid)>(),
