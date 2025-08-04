@@ -23,8 +23,8 @@ namespace analysis {
                 if (region.is_readable() && !region.is_executable()) {
                     auto read_addr = region.get_start_addr();
                     while (read_addr < region.get_end_addr()) {
-                        auto region_space = region.get_end_addr() - region.get_start_addr();
-                        auto read_size = std::min(buffer_size, region_space);
+                        auto space_left = region.get_end_addr() - read_addr;
+                        auto read_size = std::min(buffer_size, space_left);
                         std::vector<uint8_t> buffer(read_size);
                         proc.read(read_addr, buffer);
                         for (int i = 0; i < buffer.size(); i += sizeof(T)) {
