@@ -23,7 +23,7 @@ MemoryRegion::MemoryRegion(const std::string &maps_entry) {
         throw std::runtime_error("Could not parse end address");
     }
 
-    auto permissions = elems.at(1);
+    permissions = elems.at(1);
     readable = permissions.at(0) != '-';
     writable = permissions.at(1) != '-';
     executable = permissions.at(2) != '-';
@@ -49,6 +49,10 @@ bool MemoryRegion::is_writable() const {
 
 bool MemoryRegion::is_executable() const {
     return executable;
+}
+
+std::string MemoryRegion::get_permissions() const {
+    return permissions;
 }
 
 std::string MemoryRegion::get_pathname() const {

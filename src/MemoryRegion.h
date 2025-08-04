@@ -22,6 +22,8 @@ public:
 
     bool is_executable() const;
 
+    std::string get_permissions() const;
+
     std::string get_pathname() const;
 
 private:
@@ -30,6 +32,7 @@ private:
     bool readable;
     bool writable;
     bool executable;
+    std::string permissions;
     std::string pathname;
 };
 
