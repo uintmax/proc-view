@@ -7,13 +7,25 @@
 
 #include "analysis/MemoryScanner.h"
 #include "analysis/StringsFinder.h"
+#include "analysis/LuaInterface.h"
 #include "ui/ProcListWindow.h"
 
 int main(int argc, char **argv) {
+    analysis::LuaInterface lua_interface{};
+    lua_interface.execute_script(R"(
+    procs = get_processes()
+    for k,v in pairs(procs) do
+        print(v:get_pid() .. " - " .. v:get_name())
+    end
+    )"
+    );
+
+
+    return 0;
     auto proc = Process::get_process_by_name("test-bin");
     analysis::StringsFinder strings_finder{proc};
 
-    for (const auto &str : strings_finder.find()) {
+    for (const auto &str: strings_finder.find()) {
         std::cout << str << std::endl;
     }
 
@@ -39,20 +51,6 @@ int main(int argc, char **argv) {
 
     return app.exec();
 
-    sol::state lua;
-    lua.open_libraries(sol::lib::base);
-    lua.new_usertype<Process>("Process", sol::constructors<Process(pid_t pid)>(),
-                              "get_pid", &Process::get_pid,
-                              "get_name", &Process::get_comm);
-
-    lua.set_function("get_processes", Process::get_all_processes);
-    lua.script("print('hello :D')");
-    lua.script(R"(
-        procs = get_processes()
-        for k,v in pairs(procs) do
-            print(v:get_pid() .. " - " .. v:get_name())
-        end
-)");
 
     /*
     auto proc = Process::get_process_by_name("test-bin");
