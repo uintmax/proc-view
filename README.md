@@ -21,3 +21,4 @@ All dependencies besides Qt will be automatically installed via vcpkg.
 - [procfs man page](https://man.archlinux.org/man/procfs.5.en)
 - [procfs maps man page](https://man.archlinux.org/man/proc_pid_maps.5.en)
 - [pfs by dtrugman](https://github.com/dtrugman/pfs)
+- [Yama security module](https://www.kernel.org/doc/Documentation/security/Yama.txt)

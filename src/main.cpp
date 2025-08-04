@@ -5,13 +5,27 @@
 #include <sol/sol.hpp>
 #include <QtWidgets>
 
+#include "analysis/MemoryScanner.h"
 #include "ui/ProcListWindow.h"
 
 int main(int argc, char **argv) {
+    auto proc = Process::get_process_by_name("test-bin");
+    analysis::MemoryScanner memory_scanner{proc};
+    memory_scanner.scan_new<uint32_t>(1000);
+    for (const auto &addr: memory_scanner.get_addr_results()) {
+        std::cout << std::hex << addr << std::endl;
+    }
+
+    getchar();
+    memory_scanner.scan_next<uint32_t>(54321);
+    for (const auto &addr: memory_scanner.get_addr_results()) {
+        std::cout << std::hex << addr << std::endl;
+    }
+
+    return 0;
     QApplication app(argc, argv);
 
     ui::ProcListWindow proc_list_window;
-
 
 
     return app.exec();
