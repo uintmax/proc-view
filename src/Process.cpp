@@ -98,9 +98,14 @@ std::string Process::get_comm() const {
 std::vector<MemoryRegion> Process::get_memory_regions() {
     auto maps_path = procfs_mount + std::to_string(pid) + procfs_maps;
     std::ifstream maps_stream(maps_path);
+    if (maps_stream.fail())
+        throw std::runtime_error("Could not open maps file");
     std::stringstream maps_buffer;
     maps_buffer << maps_stream.rdbuf();
     auto maps = maps_buffer.str();
+
+    if (maps.empty())
+        throw std::runtime_error("Maps file empty");
 
     std::vector<MemoryRegion> memory_regions;
 
