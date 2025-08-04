@@ -9,7 +9,6 @@ namespace ui {
         try {
             memory_regions = proc->get_memory_regions();
         } catch (const std::runtime_error &e) {
-
             auto e_msg = new QMessageBox{parent};
             e_msg->setText("Could not access memory regions. Try again with higher privileges.");
             e_msg->show();
@@ -53,6 +52,18 @@ namespace ui {
         regions_table->setHorizontalHeaderItem(2, header_permissions);
         regions_table->setHorizontalHeaderItem(3, header_pathname);
 
+        for (int i = 0; i < memory_regions.size(); i++) {
+            const auto &region = memory_regions.at(i);
+            auto item_start_addr = new QTableWidgetItem(QString::number(region.get_start_addr(), 16));
+            auto item_end_addr = new QTableWidgetItem(QString::number(region.get_end_addr(), 16));
+            auto item_permissions = new QTableWidgetItem(QString::fromStdString(region.get_permissions()));
+            auto item_pathname = new QTableWidgetItem(QString::fromStdString(region.get_pathname()));
+
+            regions_table->setItem(i, 0, item_start_addr);
+            regions_table->setItem(i, 1, item_end_addr);
+            regions_table->setItem(i, 2, item_permissions);
+            regions_table->setItem(i, 3, item_pathname);
+        }
 
         show();
     }
