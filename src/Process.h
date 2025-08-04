@@ -12,6 +12,8 @@
 #include <fstream>
 #include <sstream>
 #include "MemoryRegion.h"
+#include <type_traits>
+#include <concepts>
 
 /**
  * Process class to interact with processes on Linux
@@ -51,28 +53,31 @@ public:
 
     std::vector<MemoryRegion> get_memory_regions();
 
-
+    // https://en.cppreference.com/w/cpp/language/constraints.html#Requires_clauses
     template<typename T>
-    T read(uintptr_t address) {
-        T buffer;
-        const auto len = sizeof(buffer);
-        struct iovec local;
-        local.iov_base = &buffer;
-        local.iov_len = len;
+        requires std::is_arithmetic_v<T> || std::same_as<T, std::vector<uint8_t> >
+    void read(uintptr_t address, T &buffer) {
+        struct iovec local{};
+        if constexpr (std::is_arithmetic_v<T>) {
+            local.iov_len = sizeof(buffer);
+            local.iov_base = &buffer;
+        } else {
+            local.iov_len = buffer.size();
+            local.iov_base = buffer.data();
+        }
 
-        struct iovec remote;
+        struct iovec remote{};
         remote.iov_base = reinterpret_cast<void *>(address);
-        remote.iov_len = len;
+        remote.iov_len = local.iov_len;
 
         auto bytes_read = process_vm_readv(this->pid, &local, 1, &remote, 1, 0);
         if (bytes_read == -1) {
             throw std::runtime_error("Could not read from address");
-        } else if (bytes_read != len) {
+        } else if (bytes_read != local.iov_len) {
             throw std::runtime_error(
-                "Could only read " + std::to_string(bytes_read) + " out of " + std::to_string(len) + " bytes");
+                "Could only read " + std::to_string(bytes_read) + " out of " + std::to_string(
+                    local.iov_len) + " bytes");
         }
-
-        return buffer;
     }
 
 private:
