@@ -4,6 +4,7 @@
 #include <QtWidgets>
 #include <memory>
 #include "../Process.h"
+#include <QDebug>
 
 namespace ui {
     /**
@@ -14,8 +15,14 @@ namespace ui {
         ProcDetailsWindow(pid_t pid, QWidget *parent);
 
     private:
+        void handle_btn_new_scan();
+        void handle_btn_next_scan();
+
         std::unique_ptr<Process> proc;
-        QTableWidget *regions_table = nullptr; // Managed by Qt
+        // Managed by Qt
+        QTableWidget *regions_table = nullptr;
+        QTableWidget *scanner_table = nullptr;
+        QLineEdit *line_value = nullptr;
     };
 }
 

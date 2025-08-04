@@ -30,7 +30,7 @@ namespace ui {
 
         tabs->addTab(tab_memory_regions, "Memory Regions");
         tabs->addTab(tab_memory_scanner, "Memory Scanner");
-        tabs->addTab(tab_lua, "Lua");
+        tabs->addTab(tab_lua, "Lua Scripting");
 
         // Memory regions tab
         auto layout_memory_regions = new QBoxLayout{QBoxLayout::Direction::Down, tab_memory_regions};
@@ -65,6 +65,41 @@ namespace ui {
             regions_table->setItem(i, 3, item_pathname);
         }
 
+
+        // TODO: Definitely create extra classes for tabs
+        // Memory scanner tab
+        auto layout_memory_scanner = new QBoxLayout{QBoxLayout::Direction::Down, tab_memory_scanner};
+
+        line_value = new QLineEdit{tab_memory_scanner};
+        line_value->setValidator(new QIntValidator{line_value});
+        auto btn_scan_new = new QPushButton{"New scan", tab_memory_scanner};
+        connect(btn_scan_new, &QPushButton::released, this, &ProcDetailsWindow::handle_btn_new_scan);
+        auto btn_scan_next = new QPushButton{"Next scan", tab_memory_scanner};
+        layout_memory_scanner->addWidget(line_value);
+        layout_memory_scanner->addWidget(btn_scan_new);
+        layout_memory_scanner->addWidget(btn_scan_next);
+
+
+        scanner_table = new QTableWidget(0, 2, tab_memory_scanner);
+
+        scanner_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        scanner_table->verticalHeader()->setVisible(false);
+        auto header_address = new QTableWidgetItem{};
+        header_address->setText("Address");
+        auto header_value = new QTableWidgetItem{};
+        header_value->setText("Value");
+
+        scanner_table->setHorizontalHeaderItem(0, header_address);
+        scanner_table->setHorizontalHeaderItem(1, header_value);
+        layout_memory_scanner->addWidget(scanner_table);
+
         show();
+    }
+
+    void ProcDetailsWindow::handle_btn_new_scan() {
+        qDebug() << "Scan value: " << line_value->text();
+    }
+
+    void ProcDetailsWindow::handle_btn_next_scan() {
     }
 }
