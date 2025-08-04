@@ -15,6 +15,7 @@ namespace ui {
 
     private:
         std::unique_ptr<Process> proc;
+        QTableWidget *regions_table = nullptr; // Managed by Qt
     };
 }
 
