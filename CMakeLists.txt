@@ -16,6 +16,8 @@ add_executable(proc_view src/main.cpp
         src/ProcessAnalyzer.h
         src/MemoryRegion.cpp
         src/MemoryRegion.h
+        src/ui/ProcListWindow.cpp
+        src/ui/ProcListWindow.h
 )
 
 target_include_directories(proc_view PRIVATE ${SOL2_INCLUDE_DIRS} ${LUA_INCLUDE_DIRS})

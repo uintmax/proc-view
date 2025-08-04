@@ -5,12 +5,15 @@
 #include <sol/sol.hpp>
 #include <QtWidgets>
 
-int main(int argc, char **argv) {
+#include "ui/ProcListWindow.h"
 
+int main(int argc, char **argv) {
     QApplication app(argc, argv);
-    QWidget window;
-    window.resize(600, 600);
-    window.show();
+
+    ui::ProcListWindow proc_list_window;
+
+
+
     return app.exec();
 
     sol::state lua;
