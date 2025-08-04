@@ -6,10 +6,18 @@
 #include <QtWidgets>
 
 #include "analysis/MemoryScanner.h"
+#include "analysis/StringsFinder.h"
 #include "ui/ProcListWindow.h"
 
 int main(int argc, char **argv) {
     auto proc = Process::get_process_by_name("test-bin");
+    analysis::StringsFinder strings_finder{proc};
+
+    for (const auto &str : strings_finder.find()) {
+        std::cout << str << std::endl;
+    }
+
+    /*
     analysis::MemoryScanner memory_scanner{proc};
     memory_scanner.scan_new<uint32_t>(1000);
     for (const auto &addr: memory_scanner.get_addr_results()) {
@@ -21,6 +29,7 @@ int main(int argc, char **argv) {
     for (const auto &addr: memory_scanner.get_addr_results()) {
         std::cout << std::hex << addr << std::endl;
     }
+    */
 
     return 0;
     QApplication app(argc, argv);
