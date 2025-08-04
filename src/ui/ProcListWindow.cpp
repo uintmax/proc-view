@@ -4,11 +4,9 @@ namespace ui {
     ProcListWindow::ProcListWindow() {
         auto procs = Process::get_all_processes();
 
+        setWindowTitle("ProcView - List");
         resize(600, 600);
         // TODO: Check if Qt is freeing all my allocated objects
-        setLayout(new QBoxLayout{QBoxLayout::Direction::Down, this});
-        //layout()->setContentsMargins(0, 0, 0, 0);
-
 
         // Tabs
         auto tabs = new QTabWidget{this};
@@ -22,7 +20,7 @@ namespace ui {
 
         // Proc list tab
         auto layout_proc_list = new QBoxLayout{QBoxLayout::Direction::Down, tab_proc_list};
-        auto proc_table = new QTableWidget(procs.size(), 3, tab_proc_list);
+        proc_table = new QTableWidget(procs.size(), 3, tab_proc_list);
         layout_proc_list->addWidget(proc_table);
 
         proc_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -46,7 +44,13 @@ namespace ui {
             proc_table->setItem(i, 2, item_name);
         }
 
+        connect(proc_table, &QTableWidget::cellDoubleClicked, this, &ProcListWindow::handle_table_click);
 
         show();
+    }
+
+    void ProcListWindow::handle_table_click(int row, int column) {
+        auto pid = proc_table->item(row, 0); // Get pid
+        auto proc_details_window = new ProcDetailsWindow(pid->text().toLong(), this);
     }
 }
