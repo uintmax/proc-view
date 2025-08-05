@@ -13,11 +13,12 @@ namespace ui {
         setCentralWidget(tabs);
 
         auto tab_proc_list = new QWidget{tabs};
-        auto tab_lua = new QWidget{tabs};
+        auto tab_lua = new LuaWidget{tabs};
 
         tabs->addTab(tab_proc_list, "Processes");
         tabs->addTab(tab_lua, "Lua Scripting");
 
+        // TODO: Move to extra class
         // Proc list tab
         auto layout_proc_list = new QBoxLayout{QBoxLayout::Direction::Down, tab_proc_list};
         proc_table = new QTableWidget(procs.size(), 3, tab_proc_list);
