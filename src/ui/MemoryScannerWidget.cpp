@@ -2,7 +2,7 @@
 
 namespace ui {
     MemoryScannerWidget::MemoryScannerWidget(const Process &proc, QWidget *parent): QWidget(parent),
-        memory_scanner(proc) {
+        proc(proc), memory_scanner(proc) {
         auto layout_memory_scanner = new QBoxLayout{QBoxLayout::Direction::Down, this};
 
         line_value = new QLineEdit{this};
@@ -26,6 +26,8 @@ namespace ui {
         scanner_table->setHorizontalHeaderItem(0, header_address);
         scanner_table->setHorizontalHeaderItem(1, header_value);
         layout_memory_scanner->addWidget(scanner_table);
+
+        connect(scanner_table, &QTableWidget::cellDoubleClicked, this, &MemoryScannerWidget::handle_table_click);
     }
 
     void MemoryScannerWidget::handle_btn_new_scan() {
@@ -52,6 +54,26 @@ namespace ui {
             auto result_value = new QTableWidgetItem{line_value->text()};
             scanner_table->setItem(i, 0, result_addr);
             scanner_table->setItem(i, 1, result_value);
+        }
+    }
+
+    void MemoryScannerWidget::handle_table_click(int row, int column) {
+        bool ok = false;
+        auto addr = scanner_table->item(row, 0)->text().toULongLong(&ok, 16);
+        if (!ok) {
+            auto e_msg = new QMessageBox{this};
+            e_msg->setText("Could not parse address in scanner_table");
+            e_msg->show();
+            return;
+        }
+        // For now only int support
+        auto value = QInputDialog::getInt(this, "Change value", "New value:");
+        try {
+            proc.write(addr, value);
+        } catch (const std::exception &e) {
+            auto e_msg = new QMessageBox{this};
+            e_msg->setText("Could not write to address.");
+            e_msg->show();
         }
     }
 }

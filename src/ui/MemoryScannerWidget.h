@@ -2,6 +2,7 @@
 #define MEMORYSCANNERWIDGET_H
 
 #include <QtWidgets>
+#include <QInputDialog>
 #include "../Process.h"
 #include "../analysis/MemoryScanner.h"
 
@@ -13,7 +14,9 @@ namespace ui {
     private:
         void handle_btn_new_scan();
         void handle_btn_next_scan();
+        void handle_table_click(int row, int column);
 
+        Process proc;
         QLineEdit *line_value = nullptr;
         QTableWidget *scanner_table = nullptr;
         analysis::MemoryScanner memory_scanner;
