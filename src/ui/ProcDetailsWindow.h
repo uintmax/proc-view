@@ -6,6 +6,7 @@
 #include <QDebug>
 #include "../Process.h"
 #include "MemoryScannerWidget.h"
+#include "MemoryRegionsWidget.h"
 
 
 namespace ui {

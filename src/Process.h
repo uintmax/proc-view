@@ -51,7 +51,7 @@ public:
 
     std::string get_comm() const;
 
-    std::vector<MemoryRegion> get_memory_regions();
+    std::vector<MemoryRegion> get_memory_regions() const;
 
     // https://en.cppreference.com/w/cpp/language/constraints.html#Requires_clauses
     template<typename T>

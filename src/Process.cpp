@@ -95,7 +95,7 @@ std::string Process::get_comm() const {
     return comm;
 }
 
-std::vector<MemoryRegion> Process::get_memory_regions() {
+std::vector<MemoryRegion> Process::get_memory_regions() const {
     auto maps_path = procfs_mount + std::to_string(pid) + procfs_maps;
     std::ifstream maps_stream(maps_path);
     if (maps_stream.fail())
