@@ -27,6 +27,7 @@ namespace analysis {
                         auto read_size = std::min(buffer_size, space_left);
                         std::vector<uint8_t> buffer(read_size);
                         proc.read(read_addr, buffer);
+                        // TODO: Read about alignment
                         for (int i = 0; i < buffer.size(); i += sizeof(T)) {
                             if (value == *reinterpret_cast<T *>(&buffer[i])) {
                                 addr_results.push_back(read_addr + i);

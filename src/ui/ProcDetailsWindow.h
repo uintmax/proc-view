@@ -3,8 +3,10 @@
 
 #include <QtWidgets>
 #include <memory>
-#include "../Process.h"
 #include <QDebug>
+#include "../Process.h"
+#include "MemoryScannerWidget.h"
+
 
 namespace ui {
     /**
@@ -18,7 +20,7 @@ namespace ui {
         void handle_btn_new_scan();
         void handle_btn_next_scan();
 
-        std::unique_ptr<Process> proc;
+        Process proc;
         // Managed by Qt
         QTableWidget *regions_table = nullptr;
         QTableWidget *scanner_table = nullptr;

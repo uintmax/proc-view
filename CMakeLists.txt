@@ -24,6 +24,8 @@ add_executable(proc_view src/main.cpp
         src/analysis/StringsFinder.h
         src/analysis/LuaInterface.cpp
         src/analysis/LuaInterface.h
+        src/ui/MemoryScannerWidget.cpp
+        src/ui/MemoryScannerWidget.h
 )
 
 target_include_directories(proc_view PRIVATE ${SOL2_INCLUDE_DIRS} ${LUA_INCLUDE_DIRS})

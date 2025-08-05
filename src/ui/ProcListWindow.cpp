@@ -25,12 +25,9 @@ namespace ui {
 
         proc_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
         proc_table->verticalHeader()->setVisible(false);
-        auto header_pid = new QTableWidgetItem{};
-        header_pid->setText("PID");
-        auto header_user = new QTableWidgetItem{};
-        header_user->setText("User");
-        auto header_name = new QTableWidgetItem{};
-        header_name->setText("Name");
+        auto header_pid = new QTableWidgetItem{"PID"};
+        auto header_user = new QTableWidgetItem{"User"};
+        auto header_name = new QTableWidgetItem{"Name"};
         proc_table->setHorizontalHeaderItem(0, header_pid);
         proc_table->setHorizontalHeaderItem(1, header_user);
         proc_table->setHorizontalHeaderItem(2, header_name);
@@ -51,6 +48,12 @@ namespace ui {
 
     void ProcListWindow::handle_table_click(int row, int column) {
         auto pid = proc_table->item(row, 0); // Get pid
-        auto proc_details_window = new ProcDetailsWindow(pid->text().toLong(), this);
+        try {
+            auto proc_details_window = new ProcDetailsWindow(pid->text().toLong(), this);
+        } catch (const std::exception &e) {
+            auto e_msg = new QMessageBox{this};
+            e_msg->setText("Could not access process.");
+            e_msg->show();
+        }
     }
 }

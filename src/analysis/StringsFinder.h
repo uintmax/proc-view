@@ -16,6 +16,7 @@ namespace analysis {
             max_len(max_len) {
         }
 
+        // TODO: Also return memory address of string
         std::vector<std::string> find();
 
     private:
