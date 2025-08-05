@@ -2,14 +2,35 @@
 
 Process analysis tool for Linux.
 
+I work on this project to learn more about Linux and modern C++.  
+I am always open to suggestions, feel free to create a GitHub issue.
+
+## Features
+
+- List information about running processes
+- Find null-terminated strings in process memory
+- Memory scanner
+- Memory editor
+- Lua scripting API for custom user scripts
+
+### TODO
+
+- Detection of runtime patches in executable sections
+    - Info about suspected hooks -> e.g. follow jmp
+- Disassemble machine code at specified address
+- Entropy calculation
+- Debugging functionality
+- eBPF program for process observation in kernel mode
+- Add GTest 
+
 ## Build
 
 `cmake --preset release`
 
 `cmake --build build-relase`
 
-
 ## Dependencies
+
 All dependencies besides Qt will be automatically installed via vcpkg.
 
 - sol2
