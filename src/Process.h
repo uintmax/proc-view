@@ -80,6 +80,32 @@ public:
         }
     }
 
+    template<typename T>
+        requires std::is_arithmetic_v<T> || std::same_as<T, std::vector<uint8_t> >
+    void write(uintptr_t address, T &buffer) {
+        struct iovec local{};
+        if constexpr (std::is_arithmetic_v<T>) {
+            local.iov_len = sizeof(buffer);
+            local.iov_base = &buffer;
+        } else {
+            local.iov_len = buffer.size();
+            local.iov_base = buffer.data();
+        }
+
+        struct iovec remote{};
+        remote.iov_base = reinterpret_cast<void *>(address);
+        remote.iov_len = local.iov_len;
+
+        auto bytes_read = process_vm_writev(this->pid, &local, 1, &remote, 1, 0);
+        if (bytes_read == -1) {
+            throw std::runtime_error("Could not write to address");
+        } else if (bytes_read != local.iov_len) {
+            throw std::runtime_error(
+                "Could only write " + std::to_string(bytes_read) + " out of " + std::to_string(
+                    local.iov_len) + " bytes");
+        }
+    }
+
 private:
     inline static const std::string procfs_mount = "/proc/";
     inline static const std::string procfs_exe = "/exe";
