@@ -27,7 +27,7 @@ I am always open to suggestions, feel free to create a GitHub issue.
 
 `cmake --preset release`
 
-`cmake --build build-relase`
+`cmake --build build-release`
 
 ## Dependencies
 
