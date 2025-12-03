@@ -14,8 +14,8 @@ namespace sys {
         ptrace_scope_str = ptrace_str_stream.str();
 
         // Second char is a newline character
-        if (ptrace_scope_str.empty() || ptrace_scope_str.length() != 2)
-            throw std::runtime_error("Unexpected ptrace scope");
+        if (ptrace_scope_str.length() != 2)
+            throw std::runtime_error("Unexpected ptrace scope length");
         int mode = std::stoi(ptrace_scope_str);
         if (mode < 0 || mode >= static_cast<int>(PTraceScope::COUNT))
             throw std::runtime_error("Unexpected ptrace scope");
