@@ -2,19 +2,24 @@
 #define SYSTEM_H
 #include <sys/types.h>
 #include <unistd.h>
+#include <fstream>
+#include <sstream>
+#include <stdexcept>
 
-class System {
-public:
+namespace sys {
     enum class PTraceScope {
-        NO_RESTRICTIONS,
+        SAME_UID = 0,
         RESTRICTED,
         ADMIN_ONLY,
-        NO_ATTACH
+        NO_ATTACH,
+        COUNT
     };
 
-    static uid_t get_current_user();
+    const std::string ptrace_scope_path = "/proc/sys/kernel/yama/ptrace_scope";
 
-    static PTraceScope get_ptrace_scope();
+    uid_t get_current_user();
+
+    PTraceScope get_ptrace_scope();
 };
 
 

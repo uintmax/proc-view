@@ -2,6 +2,8 @@
 
 namespace ui {
     ProcListWindow::ProcListWindow() {
+        qInfo("PTrace scope: %d", sys::get_ptrace_scope());
+
         auto procs = Process::get_all_processes();
 
         setWindowTitle("ProcView - List");

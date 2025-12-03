@@ -5,6 +5,8 @@
 #include "../Process.h"
 #include "ProcDetailsWindow.h"
 #include "LuaWidget.h"
+#include "../System.h"
+#include <QtLogging>
 
 namespace ui {
     /**
